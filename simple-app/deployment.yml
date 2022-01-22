@@ -17,4 +17,4 @@ spec:
       - name: webserver-simple
         image: nginx
         ports:
-        - containerPort: 8080
+        - containerPort: 8765
