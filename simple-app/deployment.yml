@@ -1,20 +1,29 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: simple-deployment
+  name: webapp
+  labels:
+    app: weather-forecast
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: trivial-go-web-app
+      service: webapp
   template:
     metadata:
       labels:
-        app: trivial-go-web-app
+        app: weather-forecast
+        service: webapp
     spec:
       containers:
-      - name: webserver-simple
-        image: arungupta/helloworld-spring-boot
-        ports:
-        - containerPort: 80
+        - name: webapp
+          image: exploredocker.azurecr.io/webapp:v1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          env:
+            - name: ASPNETCORE_URLS
+              value: http://+:80
+            - name: WebApiBaseAddress
+              value: http://webapi
